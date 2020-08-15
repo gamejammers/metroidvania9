@@ -5,6 +5,7 @@ using UnityEngine;
 public class CharacterMovement : MonoBehaviour
 {
     public CharacterController controller;
+    public AbilityManager abilityManager;
     public Camera cam;
     public float InputX;
     public float InputZ;
@@ -15,16 +16,22 @@ public class CharacterMovement : MonoBehaviour
     public float gravity = 14.0f;
     public float jumpForce = 10.0f;
     public bool isGrounded;
+    public bool move;
     private float verticalVelocity;
     
     void Awake()
     {
         cam = Camera.main;
+        abilityManager = FindObjectOfType<AbilityManager>();
     }
 
 
     void Update()
     {
+        CallAbility();
+        
+        if(!move) return;
+
         PlayerMovementAndRotation();
 
         this.isGrounded = controller.isGrounded;
@@ -64,6 +71,13 @@ public class CharacterMovement : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(desiredMoveDirection), desiredRotationSpeed); 
     }
 
+    void CallAbility()
+    {
+        if(Input.GetKeyDown(Keys.DASH))
+        {
+            abilityManager.CallAbility(AbilityType.DASH);
+        }
+    }
     void InputMagnitude()
     {
         PlayerMovementAndRotation();

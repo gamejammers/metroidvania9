@@ -10,4 +10,5 @@ public class Axis
 public class Keys
 {
     public const KeyCode JUMP = KeyCode.Space; 
+    public const KeyCode DASH = KeyCode.Q;
 }
