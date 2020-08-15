@@ -442,7 +442,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b992445c420b4b49b7c5d70a99fd304, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 10
+  moveSpeed: 15
   jumpCurve:
     serializedVersion: 2
     m_Curve:
@@ -476,7 +476,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  jumpStrength: 10
+  jumpStrength: 25
+  fallSpeed: 15
   sceneCamera: {fileID: 0}
   playerCam: {fileID: 7296089998376768751}
   controller: {fileID: 7296089997041048906}
@@ -585,8 +586,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7296089997387593604}
-  m_LocalRotation: {x: -0.02850623, y: 0.9707359, z: -0.18694666, w: -0.14802092}
-  m_LocalPosition: {x: 0.00000047683716, y: 0, z: 0}
+  m_LocalRotation: {x: -0.028506216, y: 0.9707359, z: -0.1869466, w: -0.1480209}
+  m_LocalPosition: {x: 0.0000009536743, y: 0, z: 0.0000076293945}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7296089996549875913}
@@ -659,7 +660,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7296089997819893081}
-  m_LocalRotation: {x: -0.025809085, y: 0.9739758, z: -0.16925853, w: -0.14851496}
+  m_LocalRotation: {x: -0.02580909, y: 0.9739758, z: -0.16925853, w: -0.14851497}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -733,7 +734,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7296089997906818118}
-  m_LocalRotation: {x: -0.02311056, y: 0.9768861, z: -0.15156135, w: -0.14895871}
+  m_LocalRotation: {x: -0.023110557, y: 0.9768861, z: -0.15156136, w: -0.14895871}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -809,7 +810,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7296089998376768749}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 7.450917, y: 10, z: 23.86386}
+  m_LocalPosition: {x: 7.4509172, y: 10, z: 23.86386}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7296089997387593607}
@@ -861,7 +862,7 @@ MonoBehaviour:
     m_DecelTime: 0.1
     m_InputAxisName: Mouse Y
     m_InputAxisValue: 0
-    m_InvertInput: 0
+    m_InvertInput: 1
     m_MinValue: 0
     m_MaxValue: 1
     m_Wrap: 0
