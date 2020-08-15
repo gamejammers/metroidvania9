@@ -18,6 +18,7 @@ namespace Metroidvania
         public float moveSpeed                                  = 10f;
         public AnimationCurve jumpCurve                         = new AnimationCurve();
         public float jumpStrength                               = 10f;
+        public float fallSpeed                                  = 15f;
         public Camera sceneCamera                               = null;
         public CinemachineVirtualCameraBase playerCam           = null;
         public CharacterController controller                   = null;
@@ -51,7 +52,7 @@ namespace Metroidvania
                 )
             ) * moveSpeed;
 
-            deltaMove.y =  -9.8f;
+            deltaMove.y = -fallSpeed;
 
             if(isJumping)
             {
