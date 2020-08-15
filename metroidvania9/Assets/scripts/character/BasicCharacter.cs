@@ -27,6 +27,8 @@ namespace Metroidvania
         public float jumpStartTime                              { get; private set; }
         public bool isGrounded                                  { get; private set; }
 
+        private Vector3 deltaMove                               = Vector3.zero;
+
         //
         // unity callbacks ////////////////////////////////////////////////////
         //
@@ -44,7 +46,7 @@ namespace Metroidvania
 
         protected virtual void Update()
         {
-            Vector3 deltaMove = sceneCamera.transform.TransformDirection(
+            deltaMove = sceneCamera.transform.TransformDirection(
                 new Vector3(
                     Input.GetAxis("Horizontal"),
                     0f,
@@ -54,6 +56,20 @@ namespace Metroidvania
 
             deltaMove.y = -fallSpeed;
 
+            if(isGrounded && Input.GetKeyDown(KeyCode.Space))
+            {
+                isJumping = true;
+                jumpStartTime = Time.time;
+            }
+        }
+
+        //
+        // --------------------------------------------------------------------
+        //
+
+        protected virtual void FixedUpdate()
+        {
+            Vector3 frameMove = deltaMove;
             if(isJumping)
             {
                 float elapsed = Time.time - jumpStartTime;
@@ -67,16 +83,11 @@ namespace Metroidvania
                 }
                 else
                 {
-                    deltaMove.y = jumpCurve.Evaluate(elapsed) * jumpStrength;
+                    frameMove.y = jumpCurve.Evaluate(elapsed) * jumpStrength;
                 }
             }
-            else if(isGrounded && Input.GetKeyDown(KeyCode.Space))
-            {
-                isJumping = true;
-                jumpStartTime = Time.time;
-            }
 
-            controller.Move(deltaMove * Time.deltaTime);
+            controller.Move(frameMove * Time.fixedDeltaTime);
             isGrounded = controller.isGrounded;
         }
     }

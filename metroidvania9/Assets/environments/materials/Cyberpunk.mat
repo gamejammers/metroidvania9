@@ -21,20 +21,22 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Cyberpunk
-  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
-  m_ShaderKeywords: _EMISSION _ENVIRONMENTREFLECTIONS_OFF _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
-    _SPECULARHIGHLIGHTS_OFF _SPECULAR_SETUP
+  m_Shader: {fileID: -6465566751694194690, guid: fbd11b82a6898684c99643d0c61256c9, type: 3}
+  m_ShaderKeywords: _EMISSION
   m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 2000
-  stringTagMap:
-    RenderType: Opaque
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
     - Texture2D_3BFE1840:
+        m_Texture: {fileID: 2800000, guid: ca3c921b8dd041b4eb3217d8df557d5f, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Texture2D_D136BCE8:
         m_Texture: {fileID: 2800000, guid: ca3c921b8dd041b4eb3217d8df557d5f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -81,6 +83,8 @@ Material:
     m_Floats:
     - FRESNEL: 1
     - Vector1_38BD3441: 0.5
+    - Vector1_7E3105F7: 2
+    - Vector1_B75D8F56: 0
     - Vector1_CF8B0D8D: 10
     - Vector1_ED5ABFD9: 0.25
     - Vector1_F3F6B787: 0
@@ -117,6 +121,7 @@ Material:
     m_Colors:
     - Color_28180829: {r: 0.16981125, g: 0.16981125, b: 0.16981125, a: 1}
     - Color_57D43A16: {r: 0.95283014, g: 0.95283014, b: 0.95283014, a: 0}
+    - Color_9766FE05: {r: 0, g: 0, b: 0, a: 0}
     - Color_F689E8B9: {r: 0.9245283, g: 0.6391348, b: 0.29218578, a: 1}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
