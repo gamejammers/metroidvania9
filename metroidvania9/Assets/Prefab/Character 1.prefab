@@ -150,6 +150,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mouseButtonIndex: 1
+  isInverted: 1
 --- !u!114 &9065280713891293639
 MonoBehaviour:
   m_ObjectHideFlags: 0
