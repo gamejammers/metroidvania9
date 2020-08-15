@@ -16,6 +16,11 @@ public class CharacterMovement : MonoBehaviour
     public float jumpForce = 10.0f;
     public bool isGrounded;
     private float verticalVelocity;
+    
+    void Awake()
+    {
+        cam = Camera.main;
+    }
 
 
     void Update()
@@ -51,7 +56,7 @@ public class CharacterMovement : MonoBehaviour
         right.y = 0;
 
         forward.Normalize();
-        right.Normalize();
+        right.Normalize(); 
 
         desiredMoveDirection = forward * InputZ + right * InputX;
 
