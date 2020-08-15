@@ -13,9 +13,18 @@ public class Dash : AbilityBase
  
     public override void Use()
     {
+        if(lastUsedTime + cooldown > Time.time)
+        {
+            Debug.Log("Dash is on cooldown");
+            return;
+        }
         Debug.Log("Dash start");
         currentDashTime = 0;
+
+        abilityManager.lockAbilities = true;
         abilityManager.characterMovement.move = false;
+
+        lastUsedTime = Time.time;
         StartCoroutine( DashRoutine() );
     }
 

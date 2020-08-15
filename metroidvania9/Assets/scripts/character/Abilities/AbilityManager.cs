@@ -21,7 +21,6 @@ public class AbilityManager : MonoBehaviour
         {
             if( ownedAbilities.Any(s => s == t) )
             {
-                lockAbilities = true;
                 allAbilities.First(s => s.abilityType == t).Use();
             }
         }
