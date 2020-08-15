@@ -16,7 +16,8 @@ namespace Metroidvania
         // members ////////////////////////////////////////////////////////////
         //
 
-        public CinemachineVirtualCamera cutsceneCam                        = null;
+        public CinemachineVirtualCamera cutsceneCam             = null;
+        public Animator gateway                                 = null;
 
         //
         // unity callbacks ////////////////////////////////////////////////////
@@ -36,6 +37,7 @@ namespace Metroidvania
             cutsceneCam.Priority = 100;
             yield return new WaitForSeconds(3f);
             cutsceneCam.Priority = 0;
+            gateway.SetTrigger("open");
         }
         
     }
