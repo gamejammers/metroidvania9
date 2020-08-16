@@ -5,7 +5,6 @@ using UnityEngine;
 public class CharacterMovement : MonoBehaviour
 {
     public CharacterController controller;
-    public AbilityManager abilityManager;
     public CharacterAnimation characterAnimation;
     public Camera cam;
     public float InputX;
@@ -17,6 +16,7 @@ public class CharacterMovement : MonoBehaviour
     public float minSpeed;
     public float currentSpeed;
     public float speedIncrement;
+    public float speedDecrement;
     public Vector3 moveVector;
     public float gravity = 14.0f;
     public float startingJumpVelocity = 10.0f;
@@ -28,14 +28,10 @@ public class CharacterMovement : MonoBehaviour
     void Awake()
     {
         cam = Camera.main;
-        abilityManager = FindObjectOfType<AbilityManager>();
     }
 
-
     void Update()
-    {
-        CallAbility();
-        
+    {        
         if(!move) return;
 
         PlayerMovementAndRotation();
@@ -88,23 +84,18 @@ public class CharacterMovement : MonoBehaviour
         
 
             desiredMoveDirection = forward * InputZ + right * InputX;
-            
-            currentSpeed += speedIncrement * Time.deltaTime;
+
             currentSpeed = Mathf.Clamp( currentSpeed, minSpeed, maxSpeed );
+            currentSpeed += speedIncrement * Time.deltaTime;
+            
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(desiredMoveDirection), desiredRotationSpeed); 
         }
         else if(moveMagnitude < turnSpeedTreshold)
         {
-            currentSpeed -= speedIncrement * Time.deltaTime * 2;
-            currentSpeed = Mathf.Clamp( currentSpeed, 0, minSpeed );
+            currentSpeed -= speedDecrement * Time.deltaTime;
+            currentSpeed = Mathf.Clamp( currentSpeed, 0, maxSpeed );
         }
     }
 
-    void CallAbility()
-    {
-        if(Input.GetKeyDown(Keys.DASH))
-        {
-            abilityManager.CallAbility(AbilityType.DASH);
-        }
-    }
+    
 }
