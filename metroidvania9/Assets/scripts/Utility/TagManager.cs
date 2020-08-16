@@ -12,3 +12,8 @@ public class Keys
     public const KeyCode JUMP = KeyCode.Space; 
     public const KeyCode DASH = KeyCode.Q;
 }
+public class AnimtaionTags{
+    public const string SPEED = "Speed";
+    public const string JUMP_TRIGGER = "StandingJump";
+    public const string RUNNINGJUMP_TRIGGER = "RunningJump";
+}

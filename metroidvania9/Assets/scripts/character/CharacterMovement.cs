@@ -6,19 +6,25 @@ public class CharacterMovement : MonoBehaviour
 {
     public CharacterController controller;
     public AbilityManager abilityManager;
+    public CharacterAnimation characterAnimation;
     public Camera cam;
     public float InputX;
     public float InputZ;
     public Vector3 desiredMoveDirection;
     public float desiredRotationSpeed;
-    public float speed;
+    public float turnSpeedTreshold;
+    public float maxSpeed;
+    public float minSpeed;
+    public float currentSpeed;
+    public float speedIncrement;
     public Vector3 moveVector;
     public float gravity = 14.0f;
-    public float jumpForce = 10.0f;
+    public float startingJumpVelocity = 10.0f;
+    public float jumpForce = 28f;
     public bool isGrounded;
     public bool move;
     private float verticalVelocity;
-    
+    private float moveMagnitude;
     void Awake()
     {
         cam = Camera.main;
@@ -41,34 +47,57 @@ public class CharacterMovement : MonoBehaviour
             verticalVelocity = -gravity * Time.deltaTime;
             if(Input.GetKeyDown(Keys.JUMP))
             {
-                verticalVelocity = jumpForce;
+                if(currentSpeed > minSpeed)
+                {
+                    characterAnimation.RunningJump();
+                }
+                else
+                {
+                    characterAnimation.StandingJump();
+                }
+                verticalVelocity = startingJumpVelocity;
             }
         }
         else
         {
             verticalVelocity -= gravity * Time.deltaTime; 
         }
-        moveVector = new Vector3(0, verticalVelocity, 0).normalized + desiredMoveDirection;
-        controller.Move(moveVector.normalized * speed * Time.deltaTime);
+        moveVector = new Vector3(0, verticalVelocity, 0).normalized * jumpForce + desiredMoveDirection.normalized * currentSpeed;
+        controller.Move(moveVector * Time.deltaTime);
     }
     void PlayerMovementAndRotation()
     {
         InputX = Input.GetAxis(Axis.HORIZONTAL_AXIS);
         InputZ = Input.GetAxis(Axis.VERTICAL_AXIS);
+        
+        characterAnimation.SetSpeed(currentSpeed); // move animation
 
-        Vector3 forward = cam.transform.forward;
-        Vector3 right = cam.transform.right;
+        moveMagnitude = new Vector2(InputX, InputZ).sqrMagnitude;
 
-        forward.y = 0;
-        right.y = 0;
+        if(moveMagnitude > turnSpeedTreshold)
+        {
+            Vector3 forward = cam.transform.forward;
+            Vector3 right = cam.transform.right;
 
-        forward.Normalize();
-        right.Normalize(); 
+            forward.y = 0;
+            right.y = 0;
 
-        desiredMoveDirection = forward * InputZ + right * InputX;
+            forward.Normalize();
+            right.Normalize(); 
 
-        if(desiredMoveDirection.sqrMagnitude != 0)
+        
+
+            desiredMoveDirection = forward * InputZ + right * InputX;
+            
+            currentSpeed += speedIncrement * Time.deltaTime;
+            currentSpeed = Mathf.Clamp( currentSpeed, minSpeed, maxSpeed );
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(desiredMoveDirection), desiredRotationSpeed); 
+        }
+        else if(moveMagnitude < turnSpeedTreshold)
+        {
+            currentSpeed -= speedIncrement * Time.deltaTime * 2;
+            currentSpeed = Mathf.Clamp( currentSpeed, 0, minSpeed );
+        }
     }
 
     void CallAbility()
@@ -77,12 +106,5 @@ public class CharacterMovement : MonoBehaviour
         {
             abilityManager.CallAbility(AbilityType.DASH);
         }
-    }
-    void InputMagnitude()
-    {
-        PlayerMovementAndRotation();
-        //
-        //Set animations
-        //
     }
 }
