@@ -45,10 +45,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityType: 0
   abilityManager: {fileID: 3653638059358860223}
+  cooldown: 5
   moveDirection: {x: 0, y: 0, z: 0}
-  dashDistance: 10
+  dashDistance: 18
   dashStoppingSpeed: 0.1
-  dashSpeed: 10
+  dashSpeed: 12
 --- !u!1 &5650110773840666652
 GameObject:
   m_ObjectHideFlags: 0

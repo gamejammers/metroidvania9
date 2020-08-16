@@ -803,15 +803,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5896055475029416037, guid: 8d851afb7d44f9d4d96c893c96534968, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.1892048
+      value: 0.18920481
       objectReference: {fileID: 0}
     - target: {fileID: 5896055475029416037, guid: 8d851afb7d44f9d4d96c893c96534968, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.08053379
+      value: -0.08053382
       objectReference: {fileID: 0}
     - target: {fileID: 5896055475029416037, guid: 8d851afb7d44f9d4d96c893c96534968, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.015572091
+      value: 0.015572093
       objectReference: {fileID: 0}
     - target: {fileID: 5896055475888691710, guid: 8d851afb7d44f9d4d96c893c96534968, type: 3}
       propertyPath: m_LocalRotation.y
@@ -830,6 +830,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1590276896, guid: ed99b18bc279d6f489fa1b2824adea38, type: 3}
+      propertyPath: dashDistance
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 1590276896, guid: ed99b18bc279d6f489fa1b2824adea38, type: 3}
+      propertyPath: dashSpeed
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: 3611613370615356590, guid: ed99b18bc279d6f489fa1b2824adea38, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
