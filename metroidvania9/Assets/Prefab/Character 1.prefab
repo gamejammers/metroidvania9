@@ -1461,8 +1461,8 @@ MonoBehaviour:
   moveVector: {x: 0, y: -1, z: 0}
   canMove: 1
   gravity: 98
-  fallMultiplier: 2.2
-  runningJumpVelocity: 60
+  fallMultiplier: 2.5
+  runningJumpVelocity: 45
   isGrounded: 1
   jumpMaxDuration: 3
   jumpMinDuration: 1
@@ -1971,7 +1971,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5896055475029416035}
-  m_LocalRotation: {x: 0.1892048, y: -0.08053377, z: 0.015572087, w: 0.97850573}
+  m_LocalRotation: {x: 0.1892048, y: -0.08053379, z: 0.015572091, w: 0.97850573}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -2171,7 +2171,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5896055475888691708}
-  m_LocalRotation: {x: 0.2069252, y: -0.08023802, z: 0.017030522, w: 0.9749122}
+  m_LocalRotation: {x: 0.2069252, y: -0.08023807, z: 0.017030537, w: 0.9749122}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
