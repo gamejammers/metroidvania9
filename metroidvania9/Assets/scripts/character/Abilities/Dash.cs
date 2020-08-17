@@ -22,7 +22,7 @@ public class Dash : AbilityBase
         currentDashTime = 0;
 
         abilityManager.lockAbilities = true;
-        abilityManager.characterMovement.move = false;
+        abilityManager.characterMovement.movementLocked = true; // lock player
 
         lastUsedTime = Time.time;
         StartCoroutine( DashRoutine() );
@@ -39,7 +39,7 @@ public class Dash : AbilityBase
             
             yield return null;
         }
-        abilityManager.characterMovement.move = true;
+        abilityManager.characterMovement.movementLocked = false;//unlock player
         EndAbility();
     }
     

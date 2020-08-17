@@ -24,9 +24,13 @@ public class AbilityManager : MonoBehaviour
                 allAbilities.First(s => s.abilityType == t).Use();
             }
         }
-    }
+        else
+        {
+            Debug.Log("ability locked down");
+        }
+    } 
 }
 public enum AbilityType
 {
-    DASH
+    DASH,HIGHERJUMP
 }

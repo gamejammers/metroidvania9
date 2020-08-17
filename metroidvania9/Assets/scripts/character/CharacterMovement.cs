@@ -4,9 +4,14 @@ using UnityEngine;
 
 public class CharacterMovement : MonoBehaviour
 {
+    /////// REFERANCES ///////
     public CharacterController controller;
     public CharacterAnimation characterAnimation;
+    public CharacterAbilityController abilityController;
     public Camera cam;
+    /////// ---------- ///////
+
+    /////// MOVEMENT ///////
     public float InputX;
     public float InputZ;
     public Vector3 desiredMoveDirection;
@@ -18,13 +23,24 @@ public class CharacterMovement : MonoBehaviour
     public float speedIncrement;
     public float speedDecrement;
     public Vector3 moveVector;
-    public float gravity = 14.0f;
-    public float startingJumpVelocity = 10.0f;
-    public float jumpForce = 28f;
-    public bool isGrounded;
-    public bool move;
-    private float verticalVelocity;
+    public bool canMove;
     private float moveMagnitude;
+    /////// -------- ///////
+
+    /////// JUMP //////
+    public float gravity = 14.0f;
+    public float fallMultiplier;
+    public float runningJumpVelocity = 10.0f;
+    public bool isGrounded;
+    public float jumpMaxDuration;
+    public float jumpMinDuration;
+    public float minJumpVelocity;
+    public float maxJumpVelocity;
+    private bool focusingForJump;
+    private float standingJumpCurrentDuration;
+    private float verticalVelocity;
+    ///////---- ///////
+    public bool movementLocked;
     void Awake()
     {
         cam = Camera.main;
@@ -32,41 +48,25 @@ public class CharacterMovement : MonoBehaviour
 
     void Update()
     {        
-        if(!move) return;
-
-        PlayerMovementAndRotation();
+        if(movementLocked) return;
 
         this.isGrounded = controller.isGrounded;
 
-        if(this.isGrounded)
-        {
-            verticalVelocity = -gravity * Time.deltaTime;
-            if(Input.GetKeyDown(Keys.JUMP))
-            {
-                if(currentSpeed > minSpeed)
-                {
-                    characterAnimation.RunningJump();
-                }
-                else
-                {
-                    characterAnimation.StandingJump();
-                }
-                verticalVelocity = startingJumpVelocity;
-            }
-        }
-        else
-        {
-            verticalVelocity -= gravity * Time.deltaTime; 
-        }
-        moveVector = new Vector3(0, verticalVelocity, 0).normalized * jumpForce + desiredMoveDirection.normalized * currentSpeed;
+        MovementAndRotation();
+
+        Jump();
+
+        moveVector = new Vector3(0, verticalVelocity, 0) + desiredMoveDirection.normalized * currentSpeed;
         controller.Move(moveVector * Time.deltaTime);
     }
-    void PlayerMovementAndRotation()
+    void MovementAndRotation()
     {
+        if(!canMove) return;
+
         InputX = Input.GetAxis(Axis.HORIZONTAL_AXIS);
         InputZ = Input.GetAxis(Axis.VERTICAL_AXIS);
         
-        characterAnimation.SetSpeed(currentSpeed); // move animation
+        characterAnimation.SetSpeed(currentSpeed); // canMove animation
 
         moveMagnitude = new Vector2(InputX, InputZ).sqrMagnitude;
 
@@ -97,5 +97,62 @@ public class CharacterMovement : MonoBehaviour
         }
     }
 
-    
+    void Jump()
+    {
+        if(this.isGrounded)
+        {
+            verticalVelocity = -gravity * Time.deltaTime;
+            if(  Input.GetKeyDown(Keys.JUMP) )
+            {
+                if(currentSpeed > minSpeed)
+                {
+                    characterAnimation.RunningJump();
+                    verticalVelocity = runningJumpVelocity;
+                }
+                else if( currentSpeed < minSpeed ) 
+                {
+                    focusingForJump = true;
+                    canMove = false;
+                }
+                
+            }
+            else if( focusingForJump && Input.GetKey(Keys.JUMP))
+            {
+                standingJumpCurrentDuration += Time.deltaTime;
+
+                if(standingJumpCurrentDuration > jumpMaxDuration)
+                {
+                    focusingForJump = false;
+                    canMove = true;
+                    standingJumpCurrentDuration = 0;
+                }
+            }  
+            else if(focusingForJump && Input.GetKeyUp(Keys.JUMP))
+            {
+                if(standingJumpCurrentDuration >= jumpMinDuration && standingJumpCurrentDuration <= jumpMaxDuration)
+                {
+                    verticalVelocity = standingJumpCurrentDuration.Map(jumpMinDuration, jumpMaxDuration, 
+                        minJumpVelocity, maxJumpVelocity );
+                    //animation
+                    focusingForJump = false;
+                    canMove = true;
+                    standingJumpCurrentDuration = 0;
+                    
+                }
+                else if(standingJumpCurrentDuration < jumpMinDuration)
+                {
+                    focusingForJump = false;
+                    canMove = true;
+                    standingJumpCurrentDuration = 0;
+                }
+            }            
+        }
+        else
+        {
+            if(verticalVelocity > 0)
+                verticalVelocity -= gravity * Time.deltaTime; 
+            else if(verticalVelocity <= 0)
+                verticalVelocity -= gravity * fallMultiplier * Time.deltaTime; 
+        }
+    }
 }
