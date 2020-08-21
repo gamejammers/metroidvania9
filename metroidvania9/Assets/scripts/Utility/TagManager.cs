@@ -14,6 +14,10 @@ public class Keys
 }
 public class AnimtaionTags{
     public const string SPEED = "Speed";
-    public const string JUMP_TRIGGER = "StandingJump";
     public const string RUNNINGJUMP_TRIGGER = "RunningJump";
+    public const string STARTFOCUSINGJUMP_TRIGGER = "StartFocusingJump";
+    public const string ENDFOCUSINGJUMP_TRIGGER = "EndFocusingJump";
+    public const string JUMPRISING_TRIGGER = "JumpRising";
+    public const string JUMPFALLING_TRIGGER = "JumpFalling";
+    public const string LANDING_TRIGGER = "LANDING";
 }

@@ -37,6 +37,8 @@ public class CharacterMovement : MonoBehaviour
     public float minJumpVelocity;
     public float maxJumpVelocity;
     private bool focusingForJump;
+    private bool fallingAnimationStarted;
+    private bool isRunningJump;
     private float standingJumpCurrentDuration;
     private float verticalVelocity;
     ///////---- ///////
@@ -98,14 +100,21 @@ public class CharacterMovement : MonoBehaviour
     }
 
     void Jump()
-    {
+    {        
         if(this.isGrounded)
         {
+            isRunningJump = false;
+            if(fallingAnimationStarted)
+            {
+                characterAnimation.Landing();
+                fallingAnimationStarted = false;
+            }
             verticalVelocity = -gravity * Time.deltaTime;
             if(  Input.GetKeyDown(Keys.JUMP) )
             {
                 if(currentSpeed > minSpeed)
                 {
+                    isRunningJump = true;
                     characterAnimation.RunningJump();
                     verticalVelocity = runningJumpVelocity;
                 }
@@ -113,8 +122,8 @@ public class CharacterMovement : MonoBehaviour
                 {
                     focusingForJump = true;
                     canMove = false;
+                    characterAnimation.StartFocusingJump();
                 }
-                
             }
             else if( focusingForJump && Input.GetKey(Keys.JUMP))
             {
@@ -122,37 +131,48 @@ public class CharacterMovement : MonoBehaviour
 
                 if(standingJumpCurrentDuration > jumpMaxDuration)
                 {
-                    focusingForJump = false;
-                    canMove = true;
-                    standingJumpCurrentDuration = 0;
+                    EndJump();
+                    characterAnimation.EndFocusingJump(); 
                 }
             }  
             else if(focusingForJump && Input.GetKeyUp(Keys.JUMP))
             {
                 if(standingJumpCurrentDuration >= jumpMinDuration && standingJumpCurrentDuration <= jumpMaxDuration)
                 {
+                    isRunningJump = false;
                     verticalVelocity = standingJumpCurrentDuration.Map(jumpMinDuration, jumpMaxDuration, 
                         minJumpVelocity, maxJumpVelocity );
-                    //animation
-                    focusingForJump = false;
-                    canMove = true;
-                    standingJumpCurrentDuration = 0;
-                    
+                    EndJump();
+                    characterAnimation.JumpRising();
                 }
                 else if(standingJumpCurrentDuration < jumpMinDuration)
                 {
-                    focusingForJump = false;
-                    canMove = true;
-                    standingJumpCurrentDuration = 0;
+                    EndJump();
+                    characterAnimation.EndFocusingJump(); 
                 }
             }            
         }
         else
         {
             if(verticalVelocity > 0)
-                verticalVelocity -= gravity * Time.deltaTime; 
-            else if(verticalVelocity <= 0)
-                verticalVelocity -= gravity * fallMultiplier * Time.deltaTime; 
+            {
+                verticalVelocity -= gravity * Time.deltaTime;
+            }
+            else if(verticalVelocity <= 0 )
+            {
+                verticalVelocity -= gravity * fallMultiplier * Time.deltaTime;
+                if(!fallingAnimationStarted && isRunningJump == false)
+                {
+                    characterAnimation.JumpFalling();
+                    fallingAnimationStarted = true;
+                }
+            }
         }
+    }
+    void EndJump()
+    {
+        focusingForJump = false;
+        canMove = true;
+        standingJumpCurrentDuration = 0;        
     }
 }
