@@ -47,7 +47,7 @@ MonoBehaviour:
   abilityManager: {fileID: 3653638059358860223}
   cooldown: 5
   moveDirection: {x: 0, y: 0, z: 0}
-  dashDistance: 16.5
+  dashDistance: 20
   dashStoppingSpeed: 0.1
   dashSpeed: 12
 --- !u!1 &5650110773840666652

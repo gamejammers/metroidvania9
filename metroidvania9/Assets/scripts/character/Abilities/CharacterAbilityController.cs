@@ -19,7 +19,8 @@ public class CharacterAbilityController : MonoBehaviour
     {
         if(Input.GetKeyDown(Keys.DASH))
         {
-            abilityManager.CallAbility(AbilityType.DASH);
+            if(characterMovement.moveMagnitude > characterMovement.turnSpeedTreshold)
+                abilityManager.CallAbility(AbilityType.DASH);
         }
     }
 }

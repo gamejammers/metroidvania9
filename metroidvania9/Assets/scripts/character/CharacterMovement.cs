@@ -24,7 +24,7 @@ public class CharacterMovement : MonoBehaviour
     public float speedDecrement;
     public Vector3 moveVector;
     public bool canMove;
-    private float moveMagnitude;
+    public float moveMagnitude;
     /////// -------- ///////
 
     /////// JUMP //////
