@@ -19,5 +19,5 @@ public class AnimtaionTags{
     public const string ENDFOCUSINGJUMP_TRIGGER = "EndFocusingJump";
     public const string JUMPRISING_TRIGGER = "JumpRising";
     public const string JUMPFALLING_TRIGGER = "JumpFalling";
-    public const string LANDING_TRIGGER = "LANDING";
+    public const string LANDING_TRIGGER = "Landing";
 }

@@ -36,6 +36,7 @@ public class CharacterMovement : MonoBehaviour
     public float jumpMinDuration;
     public float minJumpVelocity;
     public float maxJumpVelocity;
+    public float waitForLandingInterval = 0.7f;
     private bool focusingForJump;
     private bool fallingAnimationStarted;
     private bool isRunningJump;
@@ -107,6 +108,8 @@ public class CharacterMovement : MonoBehaviour
             if(fallingAnimationStarted)
             {
                 characterAnimation.Landing();
+                movementLocked = true;
+                StartCoroutine( WaitForLanding() );
                 fallingAnimationStarted = false;
             }
             verticalVelocity = -gravity * Time.deltaTime;
@@ -174,5 +177,10 @@ public class CharacterMovement : MonoBehaviour
         focusingForJump = false;
         canMove = true;
         standingJumpCurrentDuration = 0;        
+    }
+    IEnumerator WaitForLanding()
+    {
+        yield return new WaitForSeconds( waitForLandingInterval );
+        movementLocked = false;
     }
 }
