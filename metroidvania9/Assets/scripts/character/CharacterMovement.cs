@@ -37,10 +37,12 @@ public class CharacterMovement : MonoBehaviour
     public float minJumpVelocity;
     public float maxJumpVelocity;
     public float waitForLandingInterval = 0.7f;
+    public float verticalVelocityFallAnimThreshold;
     private bool focusingForJump;
+    private bool jumpRising;
     private bool fallingAnimationStarted;
-    private bool isRunningJump;
-    private float standingJumpCurrentDuration;
+/*     private bool isRunningJump;
+ */    private float standingJumpCurrentDuration;
     private float verticalVelocity;
     ///////---- ///////
     public bool movementLocked;
@@ -68,13 +70,13 @@ public class CharacterMovement : MonoBehaviour
 
         InputX = Input.GetAxis(Axis.HORIZONTAL_AXIS);
         InputZ = Input.GetAxis(Axis.VERTICAL_AXIS);
-        
-        characterAnimation.SetSpeed(currentSpeed); // canMove animation
 
         moveMagnitude = new Vector2(InputX, InputZ).sqrMagnitude;
 
         if(moveMagnitude > turnSpeedTreshold)
         {
+            characterAnimation.SetSpeed(currentSpeed); // canMove animation
+
             Vector3 forward = cam.transform.forward;
             Vector3 right = cam.transform.right;
 
@@ -83,8 +85,6 @@ public class CharacterMovement : MonoBehaviour
 
             forward.Normalize();
             right.Normalize(); 
-
-        
 
             desiredMoveDirection = forward * InputZ + right * InputX;
 
@@ -95,6 +95,8 @@ public class CharacterMovement : MonoBehaviour
         }
         else if(moveMagnitude < turnSpeedTreshold)
         {
+            characterAnimation.SetSpeed(currentSpeed); // canMove animation
+            
             currentSpeed -= speedDecrement * Time.deltaTime;
             currentSpeed = Mathf.Clamp( currentSpeed, 0, maxSpeed );
         }
@@ -104,7 +106,6 @@ public class CharacterMovement : MonoBehaviour
     {        
         if(this.isGrounded)
         {
-            isRunningJump = false;
             if(fallingAnimationStarted)
             {
                 characterAnimation.Landing();
@@ -112,12 +113,18 @@ public class CharacterMovement : MonoBehaviour
                 StartCoroutine( WaitForLanding() );
                 fallingAnimationStarted = false;
             }
+            else if(jumpRising == true)
+            {
+                jumpRising = false;
+                characterAnimation.EndFocusingJump();
+            }
+
             verticalVelocity = -gravity * Time.deltaTime;
+            
             if(  Input.GetKeyDown(Keys.JUMP) )
             {
                 if(currentSpeed > minSpeed)
                 {
-                    isRunningJump = true;
                     characterAnimation.RunningJump();
                     verticalVelocity = runningJumpVelocity;
                 }
@@ -134,7 +141,7 @@ public class CharacterMovement : MonoBehaviour
 
                 if(standingJumpCurrentDuration > jumpMaxDuration)
                 {
-                    EndJump();
+                    EndFocusingForJump();
                     characterAnimation.EndFocusingJump(); 
                 }
             }  
@@ -142,15 +149,14 @@ public class CharacterMovement : MonoBehaviour
             {
                 if(standingJumpCurrentDuration >= jumpMinDuration && standingJumpCurrentDuration <= jumpMaxDuration)
                 {
-                    isRunningJump = false;
                     verticalVelocity = standingJumpCurrentDuration.Map(jumpMinDuration, jumpMaxDuration, 
                         minJumpVelocity, maxJumpVelocity );
-                    EndJump();
+                    EndFocusingForJump();
                     characterAnimation.JumpRising();
                 }
                 else if(standingJumpCurrentDuration < jumpMinDuration)
                 {
-                    EndJump();
+                    EndFocusingForJump();
                     characterAnimation.EndFocusingJump(); 
                 }
             }            
@@ -160,19 +166,21 @@ public class CharacterMovement : MonoBehaviour
             if(verticalVelocity > 0)
             {
                 verticalVelocity -= gravity * Time.deltaTime;
+                jumpRising = true;
             }
             else if(verticalVelocity <= 0 )
             {
                 verticalVelocity -= gravity * fallMultiplier * Time.deltaTime;
-                if(!fallingAnimationStarted && isRunningJump == false)
+                if(!fallingAnimationStarted && verticalVelocity < verticalVelocityFallAnimThreshold)
                 {
+                    jumpRising = false;
                     characterAnimation.JumpFalling();
                     fallingAnimationStarted = true;
                 }
             }
         }
     }
-    void EndJump()
+    void EndFocusingForJump()
     {
         focusingForJump = false;
         canMove = true;
